@@ -3,26 +3,6 @@ import CommentHeader from "../molecule/CommentHeader";
 
 const CommentPost = ({ username, avatar, comment, replies }) => {
 	const [showComment, setShowComment] = useState(true);
-    const renderReplies = (replies) => {
-        if (replies && replies.length > 0) {
-            console.log(replies);
-            for (const reply of replies) {  
-				return (
-					<CommentPost
-						username={reply.author.name}
-						avatar={reply.author.avatar}
-						comment={reply.text}
-						replies={reply.replies}
-					/>
-                );
-                
-            }
-            for (const reply of replies) {
-				renderReplies(reply.replies);
-			}
-            
-		}
-	};
 	return (
 		<>
 			{showComment ? (
@@ -43,7 +23,18 @@ const CommentPost = ({ username, avatar, comment, replies }) => {
 					expand
 				</span>
 			)}
-			{renderReplies(replies)}
+			{replies &&
+				replies.length > 0 &&
+				replies.map((reply, idx) => (
+                    <div className={`ml-${idx}`} >
+						<CommentPost
+							username={reply.author.name}
+							avatar={reply.author.avatar}
+							comment={reply.text}
+							replies={reply.replies}
+						/>
+					</div>
+				))}
 		</>
 	);
 };
